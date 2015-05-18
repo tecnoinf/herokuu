@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
-  get 'event/new'
+  #get 'event/new'
 
-  get 'event/edit'
+  #get 'event/edit'
 
-  get 'event/delete'
+  #get 'event/delete'
 
   devise_for :users
   resources :users, only: [:index, :show]
