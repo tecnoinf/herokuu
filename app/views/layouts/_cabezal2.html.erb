@@ -1,0 +1,264 @@
+
+<!-- COMIENZO DE HEADER -->
+<nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
+    <div class="container topnav">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <%= link_to image_tag("logo.png", alt: " "), root_path %>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                <% if current_user %>    
+                    <% if current_user.role==1 %>
+                        <li>    
+                            <a href="#about">Bienvenido Admin</a>
+                        </li>
+                         <li>
+                            <%= link_to 'Members', users_path %>
+                        </li>
+                    <% else %>
+                        <li>    
+                            <a href="#about">Bienvenido Alumno</a>
+                        </li>
+                    <%end%>
+                    
+                <%end %>
+                
+                <li>
+                    <a href="#about">Nosotros</a>
+                </li>
+                <li>
+                    <a href="#services">Servicios</a>
+                </li>
+                <li>
+                    <a href="#contact">Contacto</a>
+                </li>
+                <% if current_user %>
+                    <li>
+                        <%= link_to 'Editar Perfil' ,edit_user_registration_path, class:'btn' %>
+                    </li>
+                    
+                    <li>
+                        <%= link_to 'Logout', destroy_user_session_path, method: :delete,  class:'btn' %>
+                    </li>
+                    
+                    <li class="round-image-50">
+                        <%= image_tag(current_user.avatar.url(:thumb)) %>
+                    </li>
+
+                <% else %>
+                    <li>
+                        <a href="#myModalIn" class="btn fa fa-sign-in" data-toggle="modal"> Entrar</a>
+                        <!--%= link_to 'Login', new_user_session_path %-->
+                    </li>
+                    <li>
+                        <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+                            <a href="#myModalSignUp" class="btn fa fa-sign-in" data-toggle="modal"> Registrar</a>
+                        <% end -%>
+                    </li>
+                <% end %>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav> <!--Fin de HEADER-->
+
+
+   
+    <!-- Modal HTML -->
+      <div id="myModalOut" class="modal fade">
+
+          <div class="modal-dialog">
+
+              <div class="modal-content">
+
+                  <div class="modal-header">
+
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                      <h4 class="modal-title">Confirmacion</h4>
+
+                  </div>
+
+                  <div class="modal-body">
+
+                      <p>Est&aacute; seguro que desea Cerrar sesi&oacute;n?</p>
+
+                  </div>
+
+                  <div class="modal-footer">
+
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+
+                      <input type="submit" value="Log out" id="logoutUP" name="logoutUP" class="form-control btn btn-danger">
+
+                  </div>
+
+              </div>
+
+          </div>
+
+      </div>
+    
+    
+    <!--Modal de Log In-->
+    <div id="myModalIn" class="modal fade">
+    
+      <div class="modal-dialog">
+    
+          <div class="modal-content">
+    
+              <div class="modal-header">
+    
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    
+                  <h4 class="modal-title">Log In</h4>
+    
+              </div>
+                <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'form-horizontal'}) do |f| %>
+              <div class="modal-body">
+                  
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <%= f.label :email %>
+                                
+                                    <%= f.email_field :email, autofocus: true , required:"", placeholder:'email@email.xxx', type:'text' ,class: "form-control" %>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <%= f.label :password, "Contrase&ntilde;a"%>
+                                
+                                    <%= f.password_field :password, autocomplete: "off", required:"", placeholder:'Password' ,class: "form-control" %>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <% if devise_mapping.rememberable? -%>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2">
+                                    <%= f.check_box :remember_me %>
+                                    <%= f.label :remember_me, "Recúerdame" %>
+                                </div>
+                            </div>
+                        </div>
+                      <% end -%>
+               
+                    </div>
+    
+              <div class="modal-footer">
+    
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+    
+                  <%= f.submit "Ingresar", class: 'btn btn-primary' %>
+    
+              </div>
+            <% end %>
+          </div>
+    
+      </div>
+    
+    </div>
+    
+    <!-- Modal de registro -->
+    <div id="myModalSignUp" class="modal fade">
+
+          <div class="modal-dialog">
+
+              <div class="modal-content">
+
+                  <div class="modal-header">
+
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                      <h4 class="modal-title">Registro de Usuario</h4>
+
+                  </div>
+                <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: 'form-horizontal'}) do |f| %>
+                  
+                
+                    <!--el cuerpo del modal-->
+                    
+                    <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <%= f.label :name, "Nombre" %>
+                                <%= f.text_field :name, class: "form-control",autofocus: true %>
+                            </div>
+                        </div>
+                    </div>
+                      
+                      
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <%= f.label :last_name, "Apellido" %>
+                                <%= f.text_field :last_name, class: "form-control",autofocus: true %>
+                            </div>
+                        </div>
+                    </div>
+                      
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <%= f.label :email %>
+                                <%= f.email_field :email, required:"", placeholder:"ejemplo@ejemplo.xxx", class: "form-control", autofocus: true %>
+                            </div>
+                        </div>
+                    </div>
+
+                      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+                        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+                      <% end %>
+                    
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2"> 
+                                <%= f.label :password, "Contraseña"%>
+                                <%= f.password_field :password, required:"", placeholder:"Minimo 8 caracteres",autocomplete: "off", class: "form-control" %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2"> 
+                            <%= f.label :Confirmar_Contraseña%>
+                            <%= f.password_field :password_confirmation,  required:"", placeholder:"Minimo 8 caracteres", autocomplete: "off", class: "form-control" %>
+                            </div>
+                        </div>
+                    </div>
+
+                  </div>
+
+                    <div class="modal-footer">
+    
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            
+                        <%= f.submit "Registrar", class: "btn btn-primary" %>
+                    </div>
+                  <% end %>
+
+              </div>
+
+          </div>
+
+      </div>
