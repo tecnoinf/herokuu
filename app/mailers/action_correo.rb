@@ -1,4 +1,4 @@
-class UserMailer <action_mailer::Base
+class UserMailer < Action_Mailer::Base
     default from  ' javaEE2015@gmail.com'
 end
 
